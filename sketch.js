@@ -14,22 +14,33 @@ function setup() {
   // 設定顏色模式為 HSB，方便調整飽和度
   overlayGraphics.colorMode(HSB, 255);
 
-  // 在圖形緩衝區中繪製圓
+  // 在圖形緩衝區中繪製方框和三角形
   for (let y = 0; y < overlayGraphics.height; y += 20) {
     for (let x = 0; x < overlayGraphics.width; x += 20) {
       // 取得 capture 中相對應位置的顏色
       let c = capture.get(x, y);
 
-      // 將顏色轉換為 HSB 並降低飽和度
+      // 將顏色轉換為 HSB 並調整為連色系列
       let originalColor = color(c);
       let h = hue(originalColor);
-      let s = saturation(originalColor) * 0.5; // 降低飽和度
-      let b = brightness(originalColor);
+      let s = saturation(originalColor) * 0.7; // 降低飽和度
+      let b = brightness(originalColor) * 0.9; // 降低亮度
 
-      // 設定填充顏色並繪製圓
+      // 設定填充顏色並繪製方框
       overlayGraphics.fill(h, s, b);
       overlayGraphics.noStroke();
-      overlayGraphics.ellipse(x + 10, y + 10, 15, 15); // 圓的中心位於單位內
+      overlayGraphics.rect(x, y, 20, 20); // 繪製方框
+
+      // 繪製正三角形
+      overlayGraphics.fill(200, 255, 200); // 設定三角形顏色為淡綠色
+      let centerX = x + 10; // 方框中心的 x 座標
+      let centerY = y + 10; // 方框中心的 y 座標
+      let size = 5; // 正三角形的邊長
+      overlayGraphics.triangle(
+        centerX, centerY - size / Math.sqrt(3), // 頂點
+        centerX - size / 2, centerY + size / (2 * Math.sqrt(3)), // 左下角
+        centerX + size / 2, centerY + size / (2 * Math.sqrt(3))  // 右下角
+      );
     }
   }
 
