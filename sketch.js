@@ -1,6 +1,4 @@
 let capture;
-let mosaicSize = 20; // 馬賽克方塊的大小
-let gap = 10; // 方塊之間的間隔
 let overlayGraphics; // 用於繪製的圖形緩衝區
 
 function setup() {
@@ -12,9 +10,6 @@ function setup() {
   // 創建與視訊畫面大小相同的圖形緩衝區
   overlayGraphics = createGraphics(capture.width, capture.height);
   overlayGraphics.clear(); // 清除緩衝區，確保透明背景
-  overlayGraphics.fill(200, 255, 200, 150); // 設定半透明淡綠色背景
-  overlayGraphics.noStroke();
-  overlayGraphics.rect(0, 0, overlayGraphics.width, overlayGraphics.height); // 繪製背景
 
   // 在圖形緩衝區中繪製文字
   overlayGraphics.textAlign(CENTER, CENTER); // 設定文字對齊方式為置中
@@ -35,23 +30,8 @@ function draw() {
   translate(width, 0); // 將畫布原點移到右上角
   scale(-1, 1); // 水平翻轉畫布
 
-  // 繪製馬賽克效果
-  for (let y = 0; y < capture.height; y += mosaicSize + gap) {
-    for (let x = 0; x < capture.width; x += mosaicSize + gap) {
-      // 取得區塊的顏色
-      let c = capture.get(x, y);
-
-      // 設定填充顏色並繪製方塊
-      fill(c);
-      noStroke();
-      rect(
-        width - x - xOffset - mosaicSize, // 調整 x 位置
-        y + yOffset, // 調整 y 位置
-        mosaicSize, // 方塊寬度
-        mosaicSize // 方塊高度
-      );
-    }
-  }
+  // 繪製攝影機影像
+  image(capture, width - capture.width - xOffset, yOffset, capture.width, capture.height);
   pop();
 
   // 將圖形緩衝區繪製在視訊畫面上方
