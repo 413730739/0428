@@ -1,5 +1,6 @@
 let capture;
 let mosaicSize = 20; // 馬賽克方塊的大小
+let gap = 2; // 方塊之間的間隔
 
 function setup() {
   createCanvas(windowWidth, windowHeight); // 使用視窗大小
@@ -15,6 +16,11 @@ function draw() {
   let xOffset = (width - capture.width) / 2;
   let yOffset = (height - capture.height) / 2;
 
+  // 翻轉畫布
+  push();
+  translate(width, 0); // 將畫布原點移到右上角
+  scale(-1, 1); // 水平翻轉畫布
+
   // 繪製馬賽克效果
   for (let y = 0; y < capture.height; y += mosaicSize) {
     for (let x = 0; x < capture.width; x += mosaicSize) {
@@ -24,7 +30,13 @@ function draw() {
       // 設定填充顏色並繪製方塊
       fill(c);
       noStroke();
-      rect(x + xOffset, y + yOffset, mosaicSize, mosaicSize);
+      rect(
+        width - x - xOffset - mosaicSize + gap / 2, // 調整 x 位置
+        y + yOffset + gap / 2, // 調整 y 位置
+        mosaicSize - gap, // 調整方塊寬度
+        mosaicSize - gap // 調整方塊高度
+      );
     }
   }
+  pop();
 }
