@@ -9,7 +9,20 @@ function setup() {
 
   // 創建與視訊畫面大小相同的圖形緩衝區
   overlayGraphics = createGraphics(capture.width, capture.height);
-  overlayGraphics.clear(); // 清除緩衝區，確保透明背景
+  overlayGraphics.background(200, 255, 200); // 設定背景為淡綠色
+
+  // 在圖形緩衝區中繪製圓
+  for (let y = 0; y < overlayGraphics.height; y += 20) {
+    for (let x = 0; x < overlayGraphics.width; x += 20) {
+      // 取得 capture 中相對應位置的顏色
+      let c = capture.get(x, y);
+
+      // 設定填充顏色並繪製圓
+      overlayGraphics.fill(c);
+      overlayGraphics.noStroke();
+      overlayGraphics.ellipse(x + 10, y + 10, 15, 15); // 圓的中心位於單位內
+    }
+  }
 
   // 在圖形緩衝區中繪製文字
   overlayGraphics.textAlign(CENTER, CENTER); // 設定文字對齊方式為置中
