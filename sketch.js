@@ -9,7 +9,7 @@ function setup() {
 
   // 創建與視訊畫面大小相同的圖形緩衝區
   overlayGraphics = createGraphics(capture.width, capture.height);
-  overlayGraphics.clear(); // 確保背景透明
+  overlayGraphics.background(173, 216, 230); // 設定背景為淡藍色 (RGB: 173, 216, 230)
 
   // 設定顏色模式為 HSB，方便調整顏色
   overlayGraphics.colorMode(HSB, 255);
