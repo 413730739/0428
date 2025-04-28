@@ -9,7 +9,7 @@ function setup() {
 
   // 創建與視訊畫面大小相同的圖形緩衝區
   overlayGraphics = createGraphics(capture.width, capture.height);
-  overlayGraphics.background(0); // 設定背景為黑色
+  overlayGraphics.clear(); // 確保背景透明
 
   // 設定顏色模式為 HSB，方便調整顏色
   overlayGraphics.colorMode(HSB, 255);
@@ -45,12 +45,6 @@ function setup() {
       );
     }
   }
-
-  // 在圖形緩衝區中繪製文字
-  overlayGraphics.textAlign(CENTER, CENTER); // 設定文字對齊方式為置中
-  overlayGraphics.textSize(24); // 設定文字大小
-  overlayGraphics.fill(255); // 設定文字顏色為不透明白色
-  overlayGraphics.text("這是我的影像 我是413730739莊歆翎", overlayGraphics.width / 2, overlayGraphics.height / 2);
 }
 
 function draw() {
