@@ -11,12 +11,15 @@ function setup() {
 
   // 創建與視訊畫面大小相同的圖形緩衝區
   overlayGraphics = createGraphics(capture.width, capture.height);
-  overlayGraphics.background(200, 255, 200, 100); // 設定圖形緩衝區的背景為半透明淡綠色
+  overlayGraphics.clear(); // 清除緩衝區，確保透明背景
+  overlayGraphics.fill(200, 255, 200, 150); // 設定半透明淡綠色背景
+  overlayGraphics.noStroke();
+  overlayGraphics.rect(0, 0, overlayGraphics.width, overlayGraphics.height); // 繪製背景
 
   // 在圖形緩衝區中繪製文字
   overlayGraphics.textAlign(CENTER, CENTER); // 設定文字對齊方式為置中
   overlayGraphics.textSize(24); // 設定文字大小
-  overlayGraphics.fill(255); // 設定文字顏色為白色
+  overlayGraphics.fill(255); // 設定文字顏色為不透明白色
   overlayGraphics.text("這是我的影像 我是413730739莊歆翎", overlayGraphics.width / 2, overlayGraphics.height / 2);
 }
 
