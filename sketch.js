@@ -11,7 +11,7 @@ function setup() {
 
   // 創建與視訊畫面大小相同的圖形緩衝區
   overlayGraphics = createGraphics(capture.width, capture.height);
-  overlayGraphics.background(255, 0, 0, 100); // 設定圖形緩衝區的背景為半透明紅色
+  overlayGraphics.background(200, 255, 200, 100); // 設定圖形緩衝區的背景為半透明淡綠色
 
   // 在圖形緩衝區中繪製文字
   overlayGraphics.textAlign(CENTER, CENTER); // 設定文字對齊方式為置中
