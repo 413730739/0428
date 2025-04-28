@@ -11,7 +11,7 @@ function setup() {
   overlayGraphics = createGraphics(capture.width, capture.height);
   overlayGraphics.background(0); // 設定背景為黑色
 
-  // 設定顏色模式為 HSB，方便調整飽和度
+  // 設定顏色模式為 HSB，方便調整顏色
   overlayGraphics.colorMode(HSB, 255);
 
   // 在圖形緩衝區中繪製方框和三角形
@@ -22,11 +22,11 @@ function setup() {
       // 取得 capture 中相對應位置的顏色
       let c = capture.get(x, y);
 
-      // 將顏色轉換為 HSB 並調整為連色系列
+      // 將顏色轉換為 HSB 並調整為藍色系列
       let originalColor = color(c);
-      let h = hue(originalColor);
+      let h = 200; // 固定色相為藍色
       let s = saturation(originalColor) * 0.7; // 降低飽和度
-      let b = brightness(originalColor) * 0.9; // 降低亮度
+      let b = brightness(originalColor) * 0.9; // 根據亮度調整藍色深淺
 
       // 設定填充顏色並繪製方框
       overlayGraphics.fill(h, s, b);
