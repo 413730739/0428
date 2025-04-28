@@ -15,8 +15,10 @@ function setup() {
   overlayGraphics.colorMode(HSB, 255);
 
   // 在圖形緩衝區中繪製方框和三角形
-  for (let y = 0; y < overlayGraphics.height; y += 20) {
-    for (let x = 0; x < overlayGraphics.width; x += 20) {
+  let boxSize = 20; // 方形大小
+  let spacing = 10; // 方形間距
+  for (let y = 0; y < overlayGraphics.height; y += boxSize + spacing) {
+    for (let x = 0; x < overlayGraphics.width; x += boxSize + spacing) {
       // 取得 capture 中相對應位置的顏色
       let c = capture.get(x, y);
 
@@ -29,12 +31,12 @@ function setup() {
       // 設定填充顏色並繪製方框
       overlayGraphics.fill(h, s, b);
       overlayGraphics.noStroke();
-      overlayGraphics.rect(x, y, 20, 20); // 繪製方框
+      overlayGraphics.rect(x, y, boxSize, boxSize); // 繪製方框
 
       // 繪製正三角形
       overlayGraphics.fill(200, 255, 200); // 設定三角形顏色為淡綠色
-      let centerX = x + 10; // 方框中心的 x 座標
-      let centerY = y + 10; // 方框中心的 y 座標
+      let centerX = x + boxSize / 2; // 方框中心的 x 座標
+      let centerY = y + boxSize / 2; // 方框中心的 y 座標
       let size = 5; // 正三角形的邊長
       overlayGraphics.triangle(
         centerX, centerY - size / Math.sqrt(3), // 頂點
