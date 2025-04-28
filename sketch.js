@@ -12,6 +12,12 @@ function setup() {
   // 創建與視訊畫面大小相同的圖形緩衝區
   overlayGraphics = createGraphics(capture.width, capture.height);
   overlayGraphics.background(255, 0, 0, 100); // 設定圖形緩衝區的背景為半透明紅色
+
+  // 在圖形緩衝區中繪製文字
+  overlayGraphics.textAlign(CENTER, CENTER); // 設定文字對齊方式為置中
+  overlayGraphics.textSize(24); // 設定文字大小
+  overlayGraphics.fill(255); // 設定文字顏色為白色
+  overlayGraphics.text("這是我的影像 我是413730739莊歆翎", overlayGraphics.width / 2, overlayGraphics.height / 2);
 }
 
 function draw() {
@@ -44,11 +50,6 @@ function draw() {
     }
   }
   pop();
-
-  // 在圖形緩衝區上繪製內容
-  overlayGraphics.fill(0, 255, 0, 150); // 使用半透明綠色
-  overlayGraphics.noStroke();
-  overlayGraphics.ellipse(overlayGraphics.width / 2, overlayGraphics.height / 2, 100, 100); // 繪製圓形
 
   // 將圖形緩衝區繪製在視訊畫面上方
   image(overlayGraphics, xOffset, yOffset, capture.width, capture.height);
