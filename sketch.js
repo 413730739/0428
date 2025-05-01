@@ -19,22 +19,12 @@ function setup() {
   let spacing = 10; // 方形間距
   for (let y = 0; y < overlayGraphics.height; y += boxSize + spacing) {
     for (let x = 0; x < overlayGraphics.width; x += boxSize + spacing) {
-      // 取得 capture 中相對應位置的顏色
-      let c = capture.get(x, y);
-
-      // 將顏色轉換為 HSB 並調整為藍色系列
-      let originalColor = color(c);
-      let h = 200; // 固定色相為藍色
-      let s = saturation(originalColor) * 0.7; // 降低飽和度
-      let b = brightness(originalColor) * 0.9; // 根據亮度調整藍色深淺
-
-      // 設定填充顏色並繪製方框
-      overlayGraphics.fill(h, s, b);
-      overlayGraphics.noStroke();
-      overlayGraphics.rect(x, y, boxSize, boxSize); // 繪製方框
+      // 繪製方框，顯示視訊畫面
+      overlayGraphics.image(capture, x, y, boxSize, boxSize, x, y, boxSize, boxSize);
 
       // 繪製正三角形
-      overlayGraphics.fill(200, 255, 200); // 設定三角形顏色為淡綠色
+      overlayGraphics.fill(120, 255, 200); // 設定三角形顏色為淡綠色 (HSB)
+      overlayGraphics.noStroke();
       let centerX = x + boxSize / 2; // 方框中心的 x 座標
       let centerY = y + boxSize / 2; // 方框中心的 y 座標
       let size = 5; // 正三角形的邊長
@@ -48,7 +38,7 @@ function setup() {
 }
 
 function draw() {
-  background('#fefae0'); // 設定背景顏色
+  background(173, 216, 230); // 設定背景顏色為淡藍色
 
   // 計算影像的顯示位置，讓它位於畫布正中間
   let xOffset = (width - capture.width) / 2;
