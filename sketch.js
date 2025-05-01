@@ -11,19 +11,18 @@ function setup() {
   overlayGraphics = createGraphics(capture.width, capture.height);
   overlayGraphics.background(173, 216, 230); // 設定背景為淡藍色 (RGB: 173, 216, 230)
 
-  // 設定顏色模式為 HSB，方便調整顏色
-  overlayGraphics.colorMode(HSB, 255);
+  // 設定顏色模式為 RGB
+  overlayGraphics.colorMode(RGB, 255);
 
-  // 在圖形緩衝區中繪製方框和三角形
+  // 在圖形緩衝區中繪製透明方框和三角形
   let boxSize = 20; // 方形大小
   let spacing = 10; // 方形間距
   for (let y = 0; y < overlayGraphics.height; y += boxSize + spacing) {
     for (let x = 0; x < overlayGraphics.width; x += boxSize + spacing) {
-      // 繪製方框，顯示視訊畫面
-      overlayGraphics.image(capture, x, y, boxSize, boxSize, x, y, boxSize, boxSize);
+      // 方框為透明，無需繪製任何內容
 
       // 繪製正三角形
-      overlayGraphics.fill(120, 255, 200); // 設定三角形顏色為淡綠色 (HSB)
+      overlayGraphics.fill(233, 237, 201); // 設定三角形顏色為 #e9edc9 (RGB)
       overlayGraphics.noStroke();
       let centerX = x + boxSize / 2; // 方框中心的 x 座標
       let centerY = y + boxSize / 2; // 方框中心的 y 座標
