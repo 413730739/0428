@@ -1,5 +1,10 @@
 let capture;
-let overlayGraphics; // 用於繪製的圖形緩衝區
+let savedImage; // 用於儲存攝影機影像的變數
+let graphicsBuffer; // 用於處理影像的圖形緩衝區
+const blueShades = [
+  '#e3f2fd', '#bbdefb', '#90caf9', '#64b5f6', '#42a5f5',
+  '#2196f3', '#1e88e5', '#1976d2', '#1565c0', '#0d47a1'
+]; // 藍色系列顏色
 
 function setup() {
   createCanvas(windowWidth, windowHeight); // 使用視窗大小
@@ -8,50 +13,61 @@ function setup() {
   capture.hide(); // 隱藏原始的 HTML 視訊元素
 
   // 創建與視訊畫面大小相同的圖形緩衝區
-  overlayGraphics = createGraphics(capture.width, capture.height);
-  overlayGraphics.background(173, 216, 230); // 設定背景為淡藍色 (RGB: 173, 216, 230)
-
-  // 設定顏色模式為 RGB
-  overlayGraphics.colorMode(RGB, 255);
-
-  // 在圖形緩衝區中繪製透明方框和三角形
-  let boxSize = 20; // 方形大小
-  let spacing = 10; // 方形間距
-  for (let y = 0; y < overlayGraphics.height; y += boxSize + spacing) {
-    for (let x = 0; x < overlayGraphics.width; x += boxSize + spacing) {
-      // 方框為透明，無需繪製任何內容
-
-      // 繪製正三角形
-      overlayGraphics.fill(233, 237, 201); // 設定三角形顏色為 #e9edc9 (RGB)
-      overlayGraphics.noStroke();
-      let centerX = x + boxSize / 2; // 方框中心的 x 座標
-      let centerY = y + boxSize / 2; // 方框中心的 y 座標
-      let size = 5; // 正三角形的邊長
-      overlayGraphics.triangle(
-        centerX, centerY - size / Math.sqrt(3), // 頂點
-        centerX - size / 2, centerY + size / (2 * Math.sqrt(3)), // 左下角
-        centerX + size / 2, centerY + size / (2 * Math.sqrt(3))  // 右下角
-      );
-    }
-  }
+  graphicsBuffer = createGraphics(capture.width, capture.height);
 }
 
 function draw() {
-  background(173, 216, 230); // 設定背景顏色為淡藍色
+  background('#fefae0'); // 設定背景顏色
 
   // 計算影像的顯示位置，讓它位於畫布正中間
-  let xOffset = (width - capture.width) / 2;
-  let yOffset = (height - capture.height) / 2;
+  let x = (width - capture.width) / 2;
+  let y = (height - capture.height) / 2;
 
-  // 翻轉畫布
-  push();
-  translate(width, 0); // 將畫布原點移到右上角
-  scale(-1, 1); // 水平翻轉畫布
+  // 儲存攝影機影像
+  if (capture.loadedmetadata) {
+    savedImage = capture.get(); // 將攝影機影像儲存為 p5.Image
+  }
 
-  // 繪製攝影機影像
-  image(capture, width - capture.width - xOffset, yOffset, capture.width, capture.height);
-  pop();
+  // 在圖形緩衝區中處理影像
+  if (savedImage) {
+    graphicsBuffer.push();
 
-  // 將圖形緩衝區繪製在視訊畫面上方
-  image(overlayGraphics, xOffset, yOffset, capture.width, capture.height);
+    // 設定圖形緩衝區背景顏色，覆蓋視訊畫面
+    graphicsBuffer.background(110, 227, 245); // 設定背景顏色為 rgb(110, 227, 245)
+
+    // 水平翻轉影像並繪製到緩衝區
+    graphicsBuffer.translate(graphicsBuffer.width, 0);
+    graphicsBuffer.scale(-1, 1);// 翻轉影像
+    graphicsBuffer.image(savedImage, 0, 0, graphicsBuffer.width, graphicsBuffer.height);
+    graphicsBuffer.pop();
+
+    // 在圖形緩衝區中繪製馬賽克效果的正方形
+    let squareSize = 25; // 正方形大小縮小為原來的一半
+    for (let row = 0; row < graphicsBuffer.height; row += squareSize) {
+      for (let col = 0; col < graphicsBuffer.width; col += squareSize) {
+        // 計算正方形區域的平均顏色
+        let region = savedImage.get(col, row, squareSize, squareSize);
+        region.loadPixels();
+        let totalBrightness = 0;
+        let pixelCount = region.pixels.length / 4;
+        for (let i = 0; i < region.pixels.length; i += 4) {
+          let r = region.pixels[i];
+          let g = region.pixels[i + 1];
+          let b = region.pixels[i + 2];
+          totalBrightness += (r + g + b) / 3; // 計算亮度
+        }
+        let avgBrightness = totalBrightness / pixelCount;
+
+        // 根據亮度選擇藍色系列顏色
+        let shadeIndex = floor(map(avgBrightness, 0, 255, 0, blueShades.length));
+        shadeIndex = constrain(shadeIndex, 0, blueShades.length - 1); // 確保索引在範圍內
+        graphicsBuffer.fill(blueShades[shadeIndex]); // 設定藍色系列顏色
+        graphicsBuffer.noStroke();
+        graphicsBuffer.rect(col, row, squareSize, squareSize); // 繪製正方形
+      }
+    }
+  }
+
+  // 繪製圖形緩衝區到畫布
+  image(graphicsBuffer, x, y, capture.width, capture.height);
 }
